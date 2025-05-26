@@ -1,161 +1,77 @@
 import React from "react";
-import VerticalNavBar from "./VerticalNavBar";
 import "./Dashboard.css";
+import VerticalNavBar from "./VerticalNavBar";
+
+const metrics = [
+  { label: "Total Chefs", value: "4", icon: "👨‍🍳" },
+  { label: "Total Waiters", value: "8", icon: "👨‍💼" },
+  { label: "Total Customers", value: "12", icon: "👨‍👩‍👧‍👦" },
+  { label: "Total Orders", value: "24", icon: "📦" },
+];
+
+const recentOrders = [
+  { id: 1, orderId: "#12345", customer: "John Doe", items: "Pizza, Pasta", status: "Pending", amount: "$25.00" },
+  { id: 2, orderId: "#12346", customer: "Jane Smith", items: "Burger, Fries", status: "Completed", amount: "$18.00" },
+];
 
 export default function Dashboard() {
   return (
     <div className="dashboard-root">
-      <VerticalNavBar />
-      <div className="dashboard-main">
-        <header className="dashboard-header">
-          <input className="dashboard-filter" placeholder="Filter..." />
-          <span className="dashboard-filter-arrow">&#x25BC;</span>
-        </header>
-        <section className="dashboard-analytics">
-          <h2>Analytics</h2>
-          <div className="dashboard-metrics">
-            <div className="metric-card">
-              <div className="metric-icon chef" />
-              <div>
-                <div className="metric-value">04</div>
-                <div className="metric-label">TOTAL CHEF</div>
-              </div>
+      <div className="dashboard-header">
+        <div className="header-title">Dashboard</div>
+        <div className="header-actions">
+          <input 
+            className="dashboard-filter" 
+            placeholder="Filter..."
+            type="text"
+          />
+        </div>
+      </div>
+      
+      <div className="dashboard-content">
+        <div className="metrics-grid">
+          {metrics.map((metric, index) => (
+            <div key={index} className="metric-card">
+              <div className="metric-icon">{metric.icon}</div>
+              <div className="metric-value">{metric.value}</div>
+              <div className="metric-label">{metric.label}</div>
             </div>
-            <div className="metric-card">
-              <div className="metric-icon revenue" />
-              <div>
-                <div className="metric-value">12K</div>
-                <div className="metric-label">TOTAL REVENUE</div>
-              </div>
-            </div>
-            <div className="metric-card">
-              <div className="metric-icon orders" />
-              <div>
-                <div className="metric-value">20</div>
-                <div className="metric-label">TOTAL ORDERS</div>
-              </div>
-            </div>
-            <div className="metric-card">
-              <div className="metric-icon clients" />
-              <div>
-                <div className="metric-value">65</div>
-                <div className="metric-label">TOTAL CLIENTS</div>
-              </div>
-            </div>
+          ))}
+        </div>
+
+        <div className="orders-section">
+          <div className="section-header">
+            <h2>Recent Orders</h2>
+            <button className="view-all-btn">View All</button>
           </div>
-          <div className="dashboard-charts">
-            <div className="chart-card order-summary">
-              <div className="chart-header">
-                <span>Order Summary</span>
-                <select>
-                  <option>Daily</option>
-                </select>
-              </div>
-              <div className="order-summary-details">
-                <div>
-                  <div className="summary-value">09</div>
-                  <div className="summary-label">Served</div>
-                </div>
-                <div>
-                  <div className="summary-value">05</div>
-                  <div className="summary-label">Dine In</div>
-                </div>
-                <div>
-                  <div className="summary-value">06</div>
-                  <div className="summary-label">Take Away</div>
-                </div>
-              </div>
-              <div className="order-summary-pie">
-                
-                <div className="pie-placeholder" />
-                <ul className="pie-legend">
-                  <li>
-                    <span className="legend-color takeaway" /> Take Away (24%)
-                  </li>
-                  <li>
-                    <span className="legend-color served" /> Served (41%)
-                  </li>
-                  <li>
-                    <span className="legend-color dinein" /> Dine In (35%)
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="chart-card revenue">
-              <div className="chart-header">
-                <span>Revenue</span>
-                <select>
-                  <option>Daily</option>
-                </select>
-              </div>
-              <div className="revenue-chart">
-                
-                <div className="linechart-placeholder">
-                  <div className="linechart-xaxis">
-                    <span>Mon</span>
-                    <span>Tue</span>
-                    <span>Wed</span>
-                    <span>Thu</span>
-                    <span>Fri</span>
-                    <span>Sat</span>
-                    <span>Sun</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="chart-card tables">
-              <div className="chart-header">
-                <span>Tables</span>
-                <div className="table-legend">
-                  <span className="table-dot reserved" /> Reserved
-                  <span className="table-dot available" /> Available
-                </div>
-              </div>
-              <div className="tables-grid">
-                {Array.from({ length: 30 }, (_, i) => (
-                  <div
-                    className={
-                      i % 2 === 0
-                        ? "table-cell reserved"
-                        : "table-cell available"
-                    }
-                    key={i}
-                  >
-                    Table {String(i + 1).padStart(2, "0")}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="dashboard-table">
+          
+          <div className="orders-table">
             <table>
               <thead>
                 <tr>
-                  <th>Chef Name</th>
-                  <th>Order Taken</th>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Status</th>
+                  <th>Amount</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Manesh</td>
-                  <td>03</td>
-                </tr>
-                <tr>
-                  <td>Pritam</td>
-                  <td>07</td>
-                </tr>
-                <tr>
-                  <td>Yash</td>
-                  <td>05</td>
-                </tr>
-                <tr>
-                  <td>Tenzen</td>
-                  <td>08</td>
-                </tr>
+                {recentOrders.map((order) => (
+                  <tr key={order.id}>
+                    <td>{order.orderId}</td>
+                    <td>{order.customer}</td>
+                    <td>{order.items}</td>
+                    <td className={`status ${order.status.toLowerCase()}`}>
+                      {order.status}
+                    </td>
+                    <td>{order.amount}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   );
