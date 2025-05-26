@@ -2,11 +2,16 @@ import React from "react";
 import "./Dashboard.css";
 import VerticalNavBar from "./VerticalNavBar";
 
+import chefsIcon from '../assets/bowl.png';
+import waitersIcon from '../assets/rupees.png';
+import customersIcon from '../assets/clients.png';
+import ordersIcon from '../assets/orders.png';
+
 const metrics = [
-  { label: "Total Chefs", value: "4", icon: "👨‍🍳" },
-  { label: "Total Waiters", value: "8", icon: "👨‍💼" },
-  { label: "Total Customers", value: "12", icon: "👨‍👩‍👧‍👦" },
-  { label: "Total Orders", value: "24", icon: "📦" },
+  { label: "Total Chefs", value: "4", icon: chefsIcon },
+  { label: "Total Waiters", value: "8", icon: waitersIcon },
+  { label: "Total Customers", value: "12", icon: customersIcon },
+  { label: "Total Orders", value: "24", icon: ordersIcon },
 ];
 
 const recentOrders = [
@@ -18,7 +23,6 @@ export default function Dashboard() {
   return (
     <div className="dashboard-root">
       <div className="dashboard-header">
-        <div className="header-title">Dashboard</div>
         <div className="header-actions">
           <input 
             className="dashboard-filter" 
@@ -29,14 +33,21 @@ export default function Dashboard() {
       </div>
       
       <div className="dashboard-content">
-        <div className="metrics-grid">
-          {metrics.map((metric, index) => (
-            <div key={index} className="metric-card">
-              <div className="metric-icon">{metric.icon}</div>
-              <div className="metric-value">{metric.value}</div>
-              <div className="metric-label">{metric.label}</div>
-            </div>
-          ))}
+        <div className="metrics-section">
+          <h2 className="section-title">Analytics</h2>
+          <div className="metrics-grid">
+            {metrics.map((metric, index) => (
+              <div key={index} className="metric-card">
+                <img 
+                  src={metric.icon} 
+                  alt={metric.label}
+                  className="metric-icon"
+                />
+                <div className="metric-value">{metric.value}</div>
+                <div className="metric-label">{metric.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="orders-section">
