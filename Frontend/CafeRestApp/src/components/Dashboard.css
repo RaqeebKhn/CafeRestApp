@@ -1,4 +1,6 @@
 .dashboard-root {
+  display: flex;
+  flex-direction: column;
   padding: 24px;
   background-color: #f5f7fa;
   min-height: 100vh;
@@ -10,7 +12,7 @@
 
 .header-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 .filter-container {
@@ -40,12 +42,13 @@
 }
 
 .metric-card {
-  background: white;
+  background: rgb(212, 212, 212);
   border-radius: 12px;
   padding: 24px;
   display: flex;
   align-items: center;
   gap: 16px;
+  justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
@@ -53,11 +56,12 @@
   width: 48px;
   height: 48px;
   object-fit: contain;
+   border-radius: 90px;
 }
 
 .metric-info h3 {
   font-size: 24px;
-  color: #2c3e50;
+  color: #757373;
   margin: 0;
 }
 
@@ -107,7 +111,6 @@
   cursor: pointer;
 }
 
-/* Order Summary */
 .order-counts {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -281,54 +284,54 @@
   font-weight: bold;
 }
 
-/* Recent Orders */
-.orders-table-container {
+
+.analytics-card.chef-orders {
+  grid-column: 1 / -1;
+  width: 100%;
+  padding-top: 0;
+}
+
+.chef-orders-container {
   overflow-x: auto;
   margin-top: 16px;
   flex: 1;
 }
 
-.orders-table {
+.chef-orders-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
-.orders-table th,
-.orders-table td {
+.chef-orders-table th {
   padding: 12px;
   text-align: left;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.orders-table th {
   font-weight: 600;
   color: #2c3e50;
   font-size: 14px;
+  background-color: #e2e8f0; 
+  border-radius: 5px;
 }
 
-.orders-table td {
+.chef-orders-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
   color: #64748b;
   font-size: 14px;
 }
 
-.order-status {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
+.chef-orders-table th:first-child,
+.chef-orders-table td:first-child {
+  width: 200px; 
 }
 
-.status-pending {
-  background-color: #fef3c7;
-  color: #d97706;
+.chef-orders-table th:last-child,
+.chef-orders-table td:last-child {
+  padding-left: 0;
 }
 
-.status-completed {
-  background-color: #d1fae5;
-  color: #059669;
-}
 
-/* Responsive Design */
 @media (max-width: 1200px) {
   .tables-grid {
     grid-template-columns: repeat(auto-fit, minmax(55px, 1fr));

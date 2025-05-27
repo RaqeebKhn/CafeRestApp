@@ -9,15 +9,18 @@ import ordersIcon from '../assets/orders.png';
 import revenueGraph from '../assets/revenuegraph.png';
 
 const metrics = [
-  { label: "Total Chefs", value: "4", icon: chefsIcon },
-  { label: "Total Waiters", value: "8", icon: waitersIcon },
+  { label: "Total Chefs", value: "04", icon: chefsIcon },
+  { label: "Total Waiters", value: "08", icon: waitersIcon },
   { label: "Total Customers", value: "12", icon: customersIcon },
   { label: "Total Orders", value: "24", icon: ordersIcon },
 ];
 
-const recentOrders = [
-  { id: 1, orderId: "#12345", customer: "John Doe", items: "Pizza, Pasta", status: "Pending", amount: "$25.00" },
-  { id: 2, orderId: "#12346", customer: "Jane Smith", items: "Burger, Fries", status: "Completed", amount: "$18.00" },
+
+const chefOrders = [
+  { id: 1, name: "Manesh", ordersTaken: "03" },
+  { id: 2, name: "Pritam", ordersTaken: "07" },
+  { id: 3, name: "Yash", ordersTaken: "05" },
+  { id: 4, name: "Tenzen", ordersTaken: "08" },
 ];
 
 const timePeriods = [
@@ -207,34 +210,20 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="analytics-card recent-orders">
-              <div className="analytics-header">
-                <h3 className="analytics-title">Recent Orders</h3>
-              </div>
-              
-              <div className="orders-table-container">
-                <table className="orders-table">
+            <div className="analytics-card chef-orders">
+              <div className="chef-orders-container">
+                <table className="chef-orders-table">
                   <thead>
                     <tr>
-                      <th>Order ID</th>
-                      <th>Customer</th>
-                      <th>Items</th>
-                      <th>Status</th>
-                      <th>Amount</th>
+                      <th>Chef Name</th>
+                      <th>Order Taken</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {recentOrders.map((order) => (
-                      <tr key={order.id}>
-                        <td>{order.orderId}</td>
-                        <td>{order.customer}</td>
-                        <td>{order.items}</td>
-                        <td>
-                          <span className={`order-status status-${order.status.toLowerCase()}`}>
-                            {order.status}
-                          </span>
-                        </td>
-                        <td>{order.amount}</td>
+                    {chefOrders.map((chef) => (
+                      <tr key={chef.id}>
+                        <td>{chef.name}</td>
+                        <td>{chef.ordersTaken}</td>
                       </tr>
                     ))}
                   </tbody>
