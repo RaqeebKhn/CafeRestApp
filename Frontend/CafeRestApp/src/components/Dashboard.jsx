@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./Dashboard.css";
 import VerticalNavBar from "./VerticalNavBar";
 
-
 import chefsIcon from '../assets/bowl.png';
 import waitersIcon from '../assets/rupees.png';
 import customersIcon from '../assets/clients.png';
@@ -54,7 +53,7 @@ const tables = [
 export default function Dashboard() {
   const [orderPeriod, setOrderPeriod] = useState("daily");
   const [revenuePeriod, setRevenuePeriod] = useState("daily");
-  const [showAvailable, setShowAvailable] = useState(false);
+  const [showAvailable, setShowAvailable] = useState(true);
 
   const handleOrderPeriodChange = (period) => {
     setOrderPeriod(period);
@@ -62,10 +61,6 @@ export default function Dashboard() {
 
   const handleRevenuePeriodChange = (period) => {
     setRevenuePeriod(period);
-  };
-
-  const handleTableFilter = () => {
-    setShowAvailable(!showAvailable);
   };
 
   return (
@@ -93,8 +88,10 @@ export default function Dashboard() {
                   alt={metric.label}
                   className="metric-icon"
                 />
-                <div className="metric-value">{metric.value}</div>
-                <div className="metric-label">{metric.label}</div>
+                <div className="metric-info">
+                  <h3>{metric.value}</h3>
+                  <p>{metric.label}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -102,12 +99,11 @@ export default function Dashboard() {
 
         <div className="analytics-section">
           <div className="analytics-grid">
-            
             <div className="analytics-card order-summary">
               <div className="analytics-header">
-                <h3>Order Summary</h3>
+                <h3 className="analytics-title">Order Summary</h3>
                 <select 
-                  className="period-select"
+                  className="period-selector"
                   value={orderPeriod}
                   onChange={(e) => handleOrderPeriodChange(e.target.value)}
                 >
@@ -119,46 +115,49 @@ export default function Dashboard() {
                 </select>
               </div>
               
-              <div className="order-types">
+              <div className="order-counts">
                 {orderTypes.map((type) => (
-                  <div key={type.type} className="order-type-card">
-                    <div className="order-type-icon">{type.type[0].toUpperCase()}</div>
-                    <div className="order-type-content">
-                      <div className="order-type-label">{type.type.replace(/([A-Z])/g, ' $1').trim()}</div>
-                      <div className="order-type-count">{type.count}</div>
-                      <div className="order-type-percentage">{type.percentage}</div>
-                    </div>
+                  <div key={type.type} className="order-count-item">
+                    <h4>{type.count}</h4>
+                    <p>{type.type}</p>
                   </div>
                 ))}
               </div>
 
-              <div className="order-pie-chart">
-                <div className="pie-chart-legend">
-                  <div className="pie-chart-item">
-                    <span className="pie-chart-color takeaway" />
-                    <span>Take Away</span>
-                    <span>30%</span>
-                  </div>
-                  <div className="pie-chart-item">
-                    <span className="pie-chart-color served" />
-                    <span>Served</span>
-                    <span>50%</span>
-                  </div>
-                  <div className="pie-chart-item">
-                    <span className="pie-chart-color dinein" />
-                    <span>Dine In</span>
-                    <span>20%</span>
-                  </div>
+              <div className="order-visualization">
+                <div className="donut-chart">
+                  <svg viewBox="0 0 100 100" className="donut">
+                    <circle cx="50" cy="50" r="40" className="donut-ring" />
+                    <circle cx="50" cy="50" r="40" className="donut-segment takeaway" strokeDasharray="30 70" strokeDashoffset="0" />
+                    <circle cx="50" cy="50" r="40" className="donut-segment served" strokeDasharray="50 50" strokeDashoffset="-30" />
+                    <circle cx="50" cy="50" r="40" className="donut-segment dinein" strokeDasharray="20 80" strokeDashoffset="-80" />
+                  </svg>
+                </div>
+
+                <div className="percentage-bars">
+                  {orderTypes.map((type) => (
+                    <div key={type.type} className="percentage-bar-item">
+                      <div className="percentage-bar-label">
+                        <span>{type.type}</span>
+                        <span>{type.percentage}</span>
+                      </div>
+                      <div className="percentage-bar-track">
+                        <div 
+                          className={`percentage-bar-fill bar-${type.type.toLowerCase().replace(' ', '-')}`}
+                          style={{ width: type.percentage }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
 
-            
             <div className="analytics-card revenue">
               <div className="analytics-header">
-                <h3>Revenue</h3>
+                <h3 className="analytics-title">Revenue</h3>
                 <select 
-                  className="period-select"
+                  className="period-selector"
                   value={revenuePeriod}
                   onChange={(e) => handleRevenuePeriodChange(e.target.value)}
                 >
@@ -175,65 +174,73 @@ export default function Dashboard() {
               </div>
             </div>
 
-            
             <div className="analytics-card tables">
               <div className="analytics-header">
-                <h3>Tables</h3>
-                <button 
-                  className="table-filter-btn" 
-                  onClick={handleTableFilter}
-                >
-                  {showAvailable ? "Show Reserved" : "Show Available"}
-                </button>
+                <h3 className="analytics-title">Tables</h3>
+                <div className="table-status-legend">
+                  <button 
+                    className={`status-toggle ${!showAvailable ? 'active' : ''}`}
+                    onClick={() => setShowAvailable(false)}
+                  >
+                    Reserved
+                  </button>
+                  <button 
+                    className={`status-toggle ${showAvailable ? 'active' : ''}`}
+                    onClick={() => setShowAvailable(true)}
+                  >
+                    Available
+                  </button>
+                </div>
               </div>
               
               <div className="tables-grid">
-                {tables.map((table) => (
-                  <div 
-                    key={table.id} 
-                    className={`table-item ${table.status}`}
-                    style={{ display: showAvailable && table.status === "reserved" ? "none" : "flex" }}
-                  >
-                    <div className="table-number">{table.number}</div>
-                    <div className="table-status">{table.status}</div>
-                  </div>
+                {tables
+                  .filter(table => showAvailable ? table.status === 'available' : true)
+                  .map((table) => (
+                    <div 
+                      key={table.id} 
+                      className={`table-item ${table.status}`}
+                    >
+                      <div className="table-label">Table {table.number}</div>
+                    </div>
                 ))}
               </div>
             </div>
-          </div>
-        </div>
 
-        <div className="orders-section">
-          <div className="section-header">
-            <h2>Recent Orders</h2>
-            <button className="view-all-btn">View All</button>
-          </div>
-          
-          <div className="orders-table">
-            <table>
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Customer</th>
-                  <th>Items</th>
-                  <th>Status</th>
-                  <th>Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentOrders.map((order) => (
-                  <tr key={order.id}>
-                    <td>{order.orderId}</td>
-                    <td>{order.customer}</td>
-                    <td>{order.items}</td>
-                    <td className={`status ${order.status.toLowerCase()}`}>
-                      {order.status}
-                    </td>
-                    <td>{order.amount}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="analytics-card recent-orders">
+              <div className="analytics-header">
+                <h3 className="analytics-title">Recent Orders</h3>
+              </div>
+              
+              <div className="orders-table-container">
+                <table className="orders-table">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Customer</th>
+                      <th>Items</th>
+                      <th>Status</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {recentOrders.map((order) => (
+                      <tr key={order.id}>
+                        <td>{order.orderId}</td>
+                        <td>{order.customer}</td>
+                        <td>{order.items}</td>
+                        <td>
+                          <span className={`order-status status-${order.status.toLowerCase()}`}>
+                            {order.status}
+                          </span>
+                        </td>
+                        <td>{order.amount}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
