@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useRef, useEffect } from 'react';
 import deleteIcon from '../assets/delete.png';
 import chairIcon from '../assets/chair.png';
 import './Tables.css';
@@ -31,6 +32,21 @@ const Tables = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [newTableName, setNewTableName] = useState('');
   const [newTableCustomers, setNewTableCustomers] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
+  const popupRef = useRef(null);
+  const addButtonRef = useRef(null);
+
+  useEffect(() => {
+    if (showAddForm) {
+      document.body.classList.add('popup-open');
+    } else {
+      document.body.classList.remove('popup-open');
+    }
+    
+    return () => {
+      document.body.classList.remove('popup-open');
+    };
+  }, [showAddForm]);
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this table?')) {
@@ -52,16 +68,12 @@ const Tables = () => {
       return;
     }
 
-    
     const id = newTableName.padStart(2, '0');
     
-   
     if (tables.some(table => table.id === id)) {
       setError(`Table ${id} already exists`);
       return;
     }
-
-    
     const newTable = {
       id,
       customers: parseInt(newTableCustomers, 10)
@@ -69,23 +81,43 @@ const Tables = () => {
 
     setTables([...tables, newTable]);
     
-    
     setNewTableName('');
     setNewTableCustomers(0);
     setShowAddForm(false);
     setError(null);
   };
 
+  const handleClickOutside = (e) => {
+    if (showAddForm && popupRef.current && !popupRef.current.contains(e.target) && !addButtonRef.current.contains(e.target)) {
+      setShowAddForm(false);
+    }
+  };
+
+  const filteredTables = tables.filter(table => 
+    table.id.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="tables-container">
+    <div className="tables-container" onClick={handleClickOutside}>
+      <div className="search-container">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="   Search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+      
       <div className="tables-header">
         <h2>Tables</h2>
       </div>
       
+      
       {error && <div className="error-message">{error}</div>}
       
       <div className="tables-grid">
-        {tables.map((table) => (
+        {filteredTables.map((table) => (
           <div key={table.id} className="table-card">
             <div className="table-content">
               <div className="table-header">
@@ -114,49 +146,63 @@ const Tables = () => {
         ))}
         
         
-        <div className="add-table-card" onClick={() => setShowAddForm(true)}>
+        <div className="add-table-card" onClick={() => setShowAddForm(true)} ref={addButtonRef}>
           <div className="add-icon">+</div>
         </div>
-        
-       
-        {showAddForm && (
-          <div className="add-table-popup-overlay" onClick={() => setShowAddForm(false)}>
-            <div className="add-table-popup" onClick={(e) => e.stopPropagation()}>
-              <h3>Add Table</h3>
-              
+      </div>
+
+      
+      {showAddForm && (
+        <div className="popup-overlay" onClick={handleClickOutside}>
+          <div 
+            className="add-table-popup" 
+            ref={popupRef} 
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: 'absolute',
+              top: addButtonRef.current ? addButtonRef.current.getBoundingClientRect().top + 'px' : '0',
+              left: addButtonRef.current ? (addButtonRef.current.getBoundingClientRect().left + addButtonRef.current.offsetWidth + 10) + 'px' : '0'
+            }}
+          >
+            <div className="popup-header">
+              <h3>Table name(optional)</h3>
+            </div>
+            
+            <div className="popup-content">
               <div className="form-group">
-                <label htmlFor="tableName">Table Name</label>
                 <input
                   type="text"
                   id="tableName"
                   value={newTableName}
                   onChange={(e) => setNewTableName(e.target.value)}
                   placeholder="Enter table name"
+                  className="dotted-input"
                 />
               </div>
               
-              <div className="form-group">
-                <label htmlFor="tableCustomers">Customers</label>
+              <div className="form-group chair-group">
+                <label htmlFor="tableCustomers">Chair</label>
                 <select
                   id="tableCustomers"
                   value={newTableCustomers}
                   onChange={(e) => setNewTableCustomers(e.target.value)}
+                  className="chair-dropdown"
                 >
                   {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(num => (
                     <option key={num} value={num}>{num}</option>
                   ))}
                 </select>
               </div>
-              
-              <div className="form-actions">
-                <button className="create-button" onClick={handleAddTable}>
-                  Create
-                </button>
-              </div>
+            </div>
+            
+            <div className="popup-footer">
+              <button className="create-button" onClick={handleAddTable}>
+                Create
+              </button>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
