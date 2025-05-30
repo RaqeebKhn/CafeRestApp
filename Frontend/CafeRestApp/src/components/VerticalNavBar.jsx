@@ -2,18 +2,17 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./VerticalNavBar.css";
 
-
 import dashboardIcon from '../assets/dashboard.png';
+import tablesIcon from '../assets/tables.png';
 import menuIcon from '../assets/menu.png';
 import orderlineIcon from '../assets/orderline.png';
-import tablesIcon from '../assets/tables.png';
 
 const navItems = [
   { id: 0, icon: null, empty: true },  
   { id: 1, icon: dashboardIcon },
-  { id: 2, icon: menuIcon },
+  { id: 2, icon: tablesIcon },
   { id: 3, icon: orderlineIcon },
-  { id: 4, icon: tablesIcon },
+  { id: 4, icon: menuIcon },
   { id: 5, icon: null, empty: true },  
 ];
 
@@ -29,7 +28,7 @@ export default function VerticalNavBar({ active = 0 }) {
             {item.empty ? (
               <div className="empty-icon"></div>
             ) : (
-              <Link to={`/${idx + 1}`}>
+              <Link to={`/${item.id}`}>
                 <img 
                   src={item.icon} 
                   alt={`nav-${item.id}`}

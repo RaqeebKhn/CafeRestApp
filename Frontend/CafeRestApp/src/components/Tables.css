@@ -1,0 +1,260 @@
+.tables-container {
+  padding: 0;
+  height: calc(100vh - 4rem);
+  overflow-y: auto;
+}
+
+.tables-header {
+  margin-bottom: 0.25rem;
+  padding-left: 0.5rem;
+}
+
+.tables-header h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0;
+}
+
+.error-message {
+  margin: 0 0.5rem 0.25rem;
+  padding: 0.25rem;
+  background-color: #ffebee;
+  border-radius: 4px;
+  border: 1px solid #ffcdd2;
+  color: #c62828;
+}
+
+.tables-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.table-card {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s;
+  position: relative;
+  width: 16.666%;
+  max-width: 160px;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  border: 1px solid #f0f0f0;
+}
+
+.table-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 0.25rem;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.table-number-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.table-text {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 0.125rem;
+}
+
+.table-number {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.table-actions {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.125rem;
+  border-radius: 50%;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  opacity: 0.8;
+  transition: all 0.2s;
+}
+
+.delete-button:hover .delete-icon {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.delete-button:hover {
+  background-color: rgba(255, 68, 68, 0.1);
+}
+
+.delete-button:focus {
+  outline: none;
+}
+
+.table-customers {
+  position: absolute;
+  bottom: 0.25rem;
+  right: 0.25rem;
+  font-size: 1rem;
+  color: #666;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.chair-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.25rem;
+  opacity: 0.8;
+}
+
+/* Add Table Button */
+.add-table-card {
+  width: 16.666%;
+  max-width: 160px;
+  aspect-ratio: 1;
+  border: 2px dashed #ccc;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.add-table-card:hover {
+  border-color: #999;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.add-icon {
+  font-size: 2.5rem;
+  color: #999;
+  font-weight: 300;
+}
+
+/* Add Table Popup */
+.add-table-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.add-table-popup {
+  background: white;
+  border-radius: 4px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 350px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.add-table-popup h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-size: 1.25rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.create-button {
+  padding: 0.75rem 2rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #4a90e2;
+  border: none;
+  color: white;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.create-button:hover {
+  background: #3a80d2;
+}
