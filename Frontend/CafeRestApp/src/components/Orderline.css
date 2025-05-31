@@ -1,8 +1,12 @@
+body, html {
+  overflow-x: hidden;
+}
+
 .orderline-container {
   padding: 0;
-  height: 100vh;
-  overflow-y: auto;
+  height: 100%;
   position: relative;
+  overflow-x: hidden;
 }
 
 .orderline-header {
@@ -30,6 +34,7 @@
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 15px;
   padding: 0 15px;
+  margin-bottom: 20px;
 }
 
 .order-card {
@@ -37,10 +42,11 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
-  height: 260px;
+  height: auto;
+  min-height: 300px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
   padding: 10px;
 }
 
@@ -52,19 +58,58 @@
 .order-top-box {
   background-color: white;
   padding: 12px;
-  flex: 1;
   border-radius: 6px;
   margin-bottom: 8px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .order-bottom-box {
   background-color: white;
   padding: 12px;
-  flex: 0.7;
+  flex: 1;
   border-radius: 6px;
   margin-bottom: 8px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  overflow: visible;
+}
+
+.items-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.items-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.items-list-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 20px;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+}
+
+.item-number {
+  font-size: 0.8rem;
+  color: #666;
+  margin-right: 5px;
+  min-width: 15px;
+}
+
+.item-name {
+  font-size: 0.8rem;
+  color: #333;
 }
 
 .status-container {
@@ -73,11 +118,29 @@
   margin-top: 2px;
 }
 
+.order-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+}
+
+.status-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  object-fit: contain;
+}
+
 .order-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .order-id {
@@ -86,6 +149,7 @@
   color: #333;
   display: flex;
   align-items: center;
+  flex: 0 0 auto;
 }
 
 .order-id .fork-icon {
@@ -94,20 +158,33 @@
   margin-right: 4px;
 }
 
-.order-status {
-  padding: 3px 8px;
-  border-radius: 10px;
-  font-size: 0.7rem;
+.order-table-time {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+}
+
+.table-info, .time-info {
+  display: flex;
+  align-items: center;
+}
+
+.order-table-time .detail-label {
+  color: #666;
+  margin-right: 2px;
+}
+
+.order-table-time .detail-value {
   font-weight: 500;
-  color: white;
-  text-align: center;
-  width: fit-content;
+  color: #333;
 }
 
 .order-details {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  justify-content: flex-start;
+  margin-top: 8px;
+  margin-bottom: 4px;
 }
 
 .detail-item {
@@ -127,24 +204,76 @@
   color: #333;
 }
 
-.items-label {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 5px;
+
+.dropdown-container {
+  position: relative;
+  flex: 0 0 auto;
 }
 
-.items-list {
+.dropdown-button-box {
+  border: 1px solid;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 6px 10px;
+  min-width: 100px;
+  text-align: center;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  max-height: 60px;
-  overflow-y: auto;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
 }
 
-.item-pill {
-  background-color: #f0f0f0;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 0.8rem;
+.dropdown-button-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dropdown-option-text {
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.dropdown-status-text {
+  font-size: 0.7rem;
   color: #333;
+  margin-top: 2px;
+}
+
+.dropdown-button-box:hover {
+  filter: brightness(0.95);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 10;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  width: 150px;
+  overflow: hidden;
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dropdown-item-status {
+  font-size: 0.7rem;
+  color: #666;
 }
