@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './OrderLine.css';
+import forkIcon from '../assets/fork.png';
 
 const OrderLine = () => {
   const [orders, setOrders] = useState([
@@ -32,7 +33,7 @@ const OrderLine = () => {
   return (
     <div className="orderline-container">
       <div className="orderline-header">
-        <h2>Order Line</h2>
+        <h2><img src={forkIcon} alt="Fork" className="fork-icon" /> Order Line</h2>
       </div>
 
       <div className="orders-list">
@@ -47,16 +48,19 @@ const OrderLine = () => {
             >
               <div className="order-top-box">
                 <div className="order-header">
-                  <div className="order-id">Order #{order.id}</div>
+                  <div className="order-id">
+                    <img src={forkIcon} alt="Fork" className="fork-icon" />
+                    <span>#{order.id}</span>
+                  </div>
                 </div>
                 
                 <div className="order-details">
                   <div className="detail-item">
-                    <span className="detail-label">Table:</span>
+                    <span className="detail-label">Table -</span>
                     <span className="detail-value">{order.table}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="detail-label">Time:</span>
+                    <span className="detail-label"></span>
                     <span className="detail-value">{order.time}</span>
                   </div>
                 </div>
