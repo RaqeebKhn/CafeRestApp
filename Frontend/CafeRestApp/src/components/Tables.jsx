@@ -1,33 +1,13 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import deleteIcon from '../assets/delete.png';
 import chairIcon from '../assets/chair.png';
 import './Tables.css';
 
+const API_URL = 'http://localhost:5000/api';
+
 const Tables = () => {
-  const [tables, setTables] = useState([
-    { id: '01', customers: 0 },
-    { id: '02', customers: 0 },
-    { id: '03', customers: 0 },
-    { id: '04', customers: 0 },
-    { id: '05', customers: 0 },
-    { id: '06', customers: 0 },
-    { id: '07', customers: 0 },
-    { id: '08', customers: 0 },
-    { id: '09', customers: 0 },
-    { id: '10', customers: 0 },
-    { id: '11', customers: 0 },
-    { id: '12', customers: 0 },
-    { id: '13', customers: 0 },
-    { id: '14', customers: 0 },
-    { id: '15', customers: 0 },
-    { id: '16', customers: 0 },
-    { id: '17', customers: 0 },
-    { id: '18', customers: 0 },
-    { id: '19', customers: 0 },
-    { id: '20', customers: 0 },
-  ]);
-  
+  const [tables, setTables] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newTableName, setNewTableName] = useState('');
@@ -35,6 +15,43 @@ const Tables = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const popupRef = useRef(null);
   const addButtonRef = useRef(null);
+
+  
+  const fetchTables = async () => {
+    try {
+      setLoading(true);
+      console.log('Fetching tables from:', `${API_URL}/tables`);
+      const response = await fetch(`${API_URL}/tables`);
+      console.log('Response status:', response.status);
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch tables: ${response.status}`);
+      }
+      
+      const text = await response.text();
+      console.log('Response text:', text);
+      
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (parseError) {
+        console.error('Error parsing JSON:', parseError);
+        throw new Error('Invalid JSON response from server');
+      }
+      
+      setTables(data);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching tables:', err);
+      setError('Failed to load tables. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTables();
+  }, []);
 
   useEffect(() => {
     if (showAddForm) {
@@ -48,21 +65,32 @@ const Tables = () => {
     };
   }, [showAddForm]);
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this table?')) {
-      const tableExists = tables.find(table => table.id === id);
-      
-      if (!tableExists) {
-        setError(`Table ${id} not found.`);
-        return;
+      try {
+        const response = await fetch(`${API_URL}/tables/${id}`, {
+          method: 'DELETE',
+        });
+        
+        if (!response.ok) {
+          if (response.status === 404) {
+            setError(`Table ${id} not found.`);
+          } else {
+            throw new Error('Failed to delete table');
+          }
+          return;
+        }
+        
+        setTables(tables.filter(table => table.id !== id));
+        setError(null);
+      } catch (err) {
+        console.error('Error deleting table:', err);
+        setError('Failed to delete table. Please try again.');
       }
-      
-      setTables(tables.filter(table => table.id !== id));
-      setError(null);
     }
   };
 
-  const handleAddTable = () => {
+  const handleAddTable = async () => {
     if (!newTableName.trim()) {
       setError('Table name is required');
       return;
@@ -70,21 +98,37 @@ const Tables = () => {
 
     const id = newTableName.padStart(2, '0');
     
-    if (tables.some(table => table.id === id)) {
-      setError(`Table ${id} already exists`);
-      return;
+    try {
+      const response = await fetch(`${API_URL}/tables`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id,
+          customers: parseInt(newTableCustomers, 10)
+        }),
+      });
+      
+      if (!response.ok) {
+        if (response.status === 400) {
+          setError(`Table ${id} already exists`);
+        } else {
+          throw new Error('Failed to add table');
+        }
+        return;
+      }
+      
+      const newTable = await response.json();
+      setTables([...tables, newTable]);
+      setNewTableName('');
+      setNewTableCustomers(0);
+      setShowAddForm(false);
+      setError(null);
+    } catch (err) {
+      console.error('Error adding table:', err);
+      setError('Failed to add table. Please try again.');
     }
-    const newTable = {
-      id,
-      customers: parseInt(newTableCustomers, 10)
-    };
-
-    setTables([...tables, newTable]);
-    
-    setNewTableName('');
-    setNewTableCustomers(0);
-    setShowAddForm(false);
-    setError(null);
   };
 
   const handleClickOutside = (e) => {
@@ -113,44 +157,45 @@ const Tables = () => {
         <h2>Tables</h2>
       </div>
       
-      
       {error && <div className="error-message">{error}</div>}
       
-      <div className="tables-grid">
-        {filteredTables.map((table) => (
-          <div key={table.id} className="table-card">
-            <div className="table-content">
-              <div className="table-header">
-                <div className="table-number-container">
-                  <span className="table-text">Table</span>
-                  <span className="table-number">{table.id}</span>
-                </div>
-                <div className="table-actions">
-                  <button 
-                    className="delete-button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(table.id);
-                    }}
-                  >
-                    <img src={deleteIcon} alt="Delete" className="delete-icon" />
-                  </button>
+      {loading ? (
+        <div className="loading-message">Loading tables...</div>
+      ) : (
+        <div className="tables-grid">
+          {filteredTables.map((table) => (
+            <div key={table.id} className="table-card">
+              <div className="table-content">
+                <div className="table-header">
+                  <div className="table-number-container">
+                    <span className="table-text">Table</span>
+                    <span className="table-number">{table.id}</span>
+                  </div>
+                  <div className="table-actions">
+                    <button 
+                      className="delete-button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(table.id);
+                      }}
+                    >
+                      <img src={deleteIcon} alt="Delete" className="delete-icon" />
+                    </button>
+                  </div>
                 </div>
               </div>
+              <div className="table-customers">
+                <img src={chairIcon} alt="Chair" className="chair-icon" />
+                <span>{table.customers}</span>
+              </div>
             </div>
-            <div className="table-customers">
-              <img src={chairIcon} alt="Chair" className="chair-icon" />
-              <span>{table.customers}</span>
-            </div>
+          ))}
+          
+          <div className="add-table-card" onClick={() => setShowAddForm(true)} ref={addButtonRef}>
+            <div className="add-icon">+</div>
           </div>
-        ))}
-        
-        
-        <div className="add-table-card" onClick={() => setShowAddForm(true)} ref={addButtonRef}>
-          <div className="add-icon">+</div>
         </div>
-      </div>
-
+      )}
       
       {showAddForm && (
         <div className="popup-overlay" onClick={handleClickOutside}>
