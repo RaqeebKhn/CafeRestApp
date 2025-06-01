@@ -12,6 +12,7 @@ const tableRoutes = require("./routes/tableRoutes");
 const app = express();
 const port = 5000;
 
+// Middlewares
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH']
@@ -19,15 +20,14 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(express.json());
 
-
-
+// Seeder
 async function seedDefaultTables() {
   const existingCount = await Table.countDocuments();
   if (existingCount < 14) {
     const tablesToCreate = [];
     for (let i = existingCount + 1; i <= 14; i++) {
       tablesToCreate.push({
-        id: `${i.toString()}`,
+        id: i.toString(),
         customers: 0
       });
     }
@@ -39,26 +39,33 @@ async function seedDefaultTables() {
   }
 }
 
+// Main setup
+async function startServer() {
+  try {
+    await mongoose.connect(process.env.BACKEND_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log("Connected to MongoDB");
 
-  
-  
-mongoose.connect(process.env.BACKEND_URI)
-  .then(() => console.log("Connected to MongoDB"))
-  .then(async () => {
     await seedDefaultTables();
     console.log('Seeding complete.');
-    
-  })
-  .catch(err => console.error("Could not connect to MongoDB:", err));
 
-app.use("/tables", tableRoutes);
+    app.use("/tables", tableRoutes);
 
-app.get("/", (req, res) => {
-  res.status(200).json({
-    message: "CafeRestApp API is running",
-  });
-});
+    app.get("/", (req, res) => {
+      res.status(200).json({
+        message: "CafeRestApp API is running",
+      });
+    });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+
+  } catch (err) {
+    console.error("Could not connect to MongoDB:", err);
+  }
+}
+
+startServer();
