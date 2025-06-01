@@ -3,7 +3,7 @@ import deleteIcon from '../assets/delete.png';
 import chairIcon from '../assets/chair.png';
 import './Tables.css';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://caferestapp.onrender.com';
 
 const Tables = () => {
   const [tables, setTables] = useState([]);
