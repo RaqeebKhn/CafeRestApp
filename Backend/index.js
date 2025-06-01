@@ -42,10 +42,7 @@ async function seedDefaultTables() {
 // Main setup
 async function startServer() {
   try {
-    await mongoose.connect(process.env.BACKEND_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+    await mongoose.connect(process.env.BACKEND_URI);
     console.log("Connected to MongoDB");
 
     await seedDefaultTables();
