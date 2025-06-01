@@ -1,0 +1,370 @@
+.placeorder-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  color: #333;
+  padding: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.placeorder-container .menu-header {
+  padding: 15px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.placeorder-container .greeting-container {
+  margin-bottom: 15px;
+}
+
+.placeorder-container .greeting-text {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 5px 0;
+}
+
+.placeorder-container .greeting-subtext {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+}
+
+.placeorder-container .custom-search-container {
+  margin-top: 15px;
+}
+
+.placeorder-container .custom-search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.placeorder-container .custom-search-icon {
+  position: absolute;
+  left: 15px;
+  width: 18px;
+  height: 18px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.placeorder-container .custom-search-input {
+  width: 100%;
+  padding: 12px 15px 12px 40px;
+  border: none;
+  font-size: 0.9rem;
+  background-color: transparent;
+  color: #333;
+}
+
+.placeorder-container .custom-search-input:focus {
+  outline: none;
+}
+
+.placeorder-container .custom-search-input::placeholder {
+  color: #888;
+}
+
+.order-section, .user-details-section {
+  margin-bottom: 25px;
+  padding: 0 15px;
+}
+
+.order-section h3, .user-details-section h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0 0 15px 0;
+  color: #333;
+}
+
+.order-items {
+  margin-bottom: 20px;
+}
+
+.order-item {
+  display: flex;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.item-image {
+  width: 90px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-right: 12px;
+  background-color: #f8f8f8;
+}
+
+.item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.item-name {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.item-price-qty {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-price {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.item-quantity-control {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  height: 30px;
+}
+
+.qty-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #007bff;
+  cursor: pointer;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.qty-btn:hover {
+  color: #0056b3;
+}
+
+.qty-value {
+  font-weight: 500;
+  color: #333;
+  margin: 0 8px;
+  min-width: 16px;
+  text-align: center;
+}
+
+.cooking-instructions-container {
+  margin: 15px 0;
+  text-align: center;
+}
+
+.cooking-instructions-text {
+  color: #666;
+  font-size: 0.9rem;
+  border-bottom: 1px dotted #999;
+  cursor: pointer;
+}
+
+
+.delivery-toggle-container {
+  margin: 15px 0;
+}
+
+.delivery-toggle {
+  display: flex;
+  background-color: #f0f0f0;
+  border-radius: 25px;
+  padding: 3px;
+  width: 100%;
+  max-width: 250px; 
+  margin: 0 auto;
+}
+
+.toggle-btn {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 8px 0; 
+  font-size: 0.85rem; 
+  font-weight: 500;
+  color: #666;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-btn.active {
+  background-color: white;
+  color: #000; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-totals {
+  background-color: #f8f8f8;
+  padding: 15px;
+  margin: 0 -15px; 
+  box-sizing: border-box; 
+  width: 100%; 
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 0 15px; 
+}
+
+.total-row:last-child {
+  margin-bottom: 0;
+}
+
+.grand-total {
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+  margin-top: 10px;
+}
+
+.grand-total-label {
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+
+.user-details-section {
+  background-color: #f8f8f8;
+  padding: 20px 15px;
+  margin: 0 -15px;
+  box-sizing: border-box; 
+  width: 100%; 
+}
+
+.details-heading {
+  font-weight: 700 !important;
+  margin-bottom: 15px !important;
+  padding-left: 15px; 
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 15px; 
+}
+
+.user-name-phone {
+  font-size: 0.95rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.address-line, .delivery-time-line {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.icon {
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.swipe-order-container {
+  margin-top: auto;
+  padding: 20px 15px;
+}
+
+.swipe-slider {
+  position: relative;
+  height: 50px;
+  background-color: #f0f0f0;
+  border-radius: 25px;
+  overflow: hidden;
+  touch-action: none; 
+}
+
+.swipe-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 25px;
+}
+
+.swipe-thumb {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black; 
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  transition: left 0.1s ease;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.swipe-thumb:hover {
+  background-color: #f8f8f8; 
+}
+
+.swipe-icon {
+  font-size: 1.2rem;
+  color: black; 
+}
+
+.swipe-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-weight: 500;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.mobile-viewport .placeorder-container {
+  min-height: 600px;
+  max-height: 80vh;
+}
+
+@media (max-width: 480px) {
+  .user-name-phone, .address-line, .delivery-time-line {
+    font-size: 0.85rem;
+  }
+}

@@ -6,14 +6,14 @@ import VerticalNavBar from './components/VerticalNavBar'
 import Tables from './components/Tables'
 import OrderLine from './components/Orderline'
 import Menu from './components/Menu'
-
+import Placeorder from './components/Placeorder'
 
 function AppContent() {
   const location = useLocation();
   
   useEffect(() => {
     
-    if (location.pathname === '/mobile-menu') {
+    if (location.pathname === '/mobile-menu' || location.pathname === '/place-order') {
       document.body.classList.add('mobile-body-style');
     } else {
       document.body.classList.remove('mobile-body-style');
@@ -34,6 +34,11 @@ function AppContent() {
         </div>
       } />
       
+      <Route path="/place-order" element={
+        <div className="mobile-viewport">
+          <Placeorder />
+        </div>
+      } />
       
       <Route path="/*" element={
         <div className="app-container">

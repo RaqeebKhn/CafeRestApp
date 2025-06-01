@@ -298,6 +298,50 @@ body.mobile-body-style {
   color: #666;
 }
 
+.next-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 100;
+  display: none; 
+}
+
+.next-button:hover {
+  background-color: #0069d9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.next-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-viewport .next-button {
+  display: block;
+  position: absolute; 
+  bottom: 15px;
+  right: 15px;
+  padding: 10px 25px;
+}
+
+@media (max-width: 480px) {
+  .next-button {
+    bottom: 15px;
+    right: 15px;
+    padding: 10px 25px;
+  }
+}
 
 @media (max-height: 800px) {
   .mobile-viewport {
