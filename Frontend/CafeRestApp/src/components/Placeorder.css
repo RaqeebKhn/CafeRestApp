@@ -363,6 +363,147 @@
   max-height: 80vh;
 }
 
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.popup-content {
+  position: relative;
+  background-color: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 350px; 
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  animation: popIn 0.3s ease-out;
+}
+
+.popup-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.popup-close:hover {
+  background-color: #f5f5f5;
+}
+
+.popup-content h3 {
+  margin: 0 0 20px 0;
+  font-size: 1.3rem;
+  color: #333;
+  text-align: center;
+}
+
+.instructions-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+  resize: vertical;
+}
+
+.instructions-textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+.instructions-disclaimer {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+
+.popup-cancel,
+.popup-save {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.popup-cancel {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.popup-save {
+  background-color: #808080;
+  color: white;
+}
+
+.popup-cancel:hover {
+  background-color: #e0e0e0;
+}
+
+.popup-save:hover {
+  background-color: #707070;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.content-wrapper {
+  width: 100%;
+  height: 100%;
+  transition: filter 0.3s ease;
+}
+
+.blur-background {
+  filter: blur(3px);
+  pointer-events: none;
+  overflow: hidden;
+  height: 100vh;
+}
+
 @media (max-width: 480px) {
   .user-name-phone, .address-line, .delivery-time-line {
     font-size: 0.85rem;

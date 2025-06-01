@@ -50,7 +50,7 @@ const Menu = () => {
   const navigate = useNavigate();
 
   const categories = [
-    { id: 'All', icon: burgerIcon },
+    { id: 'Burger', icon: burgerIcon },
     { id: 'Pizza', icon: pizzaIcon },
     { id: 'Drinks', icon: drinkIcon },
     { id: 'French Fries', icon: frenchfriesIcon },
