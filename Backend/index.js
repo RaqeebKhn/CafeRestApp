@@ -51,7 +51,7 @@ mongoose.connect(process.env.BACKEND_URI)
   })
   .catch(err => console.error("Could not connect to MongoDB:", err));
 
-app.use("/api/tables", tableRoutes);
+app.use("/tables", tableRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({
