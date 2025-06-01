@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Table = require('../models/Tables');
 
-router.get('/', async (req, res) => {
+router.get('/tables', async (req, res) => {
   try {
     const tables = await Table.find().sort({ id: 1 });
     res.status(200).json(tables);
@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/tables', async (req, res) => {
   try {
     const { id, customers } = req.body;
     
@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/tables/:id', async (req, res) => {
   try {
     const tableId = req.params.id;
     const deletedTable = await Table.findOneAndDelete({ id: tableId });
@@ -48,7 +48,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/tables/:id', async (req, res) => {
   try {
     const tableId = req.params.id;
     const { customers } = req.body;
