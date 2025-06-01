@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './OrderLine.css';
+import './Orderline.css';
 import forkIcon from '../assets/fork.png';
 import checkIcon from '../assets/check.png';
 import hourGlassIcon from '../assets/hour-glass.png';
