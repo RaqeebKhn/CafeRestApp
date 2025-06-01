@@ -3,7 +3,9 @@ import deleteIcon from '../assets/delete.png';
 import chairIcon from '../assets/chair.png';
 import './Tables.css';
 
-const API_URL = 'https://caferestapp.onrender.com';
+
+const API_URL = 'http://localhost:5000/api';
+
 
 const Tables = () => {
   const [tables, setTables] = useState([]);
@@ -39,7 +41,12 @@ const Tables = () => {
         throw new Error('Invalid JSON response from server');
       }
       
-      setTables(data);
+      // Sort tables by ID
+      const sortedTables = data.sort((a, b) => {
+        return parseInt(a.id) - parseInt(b.id);
+      });
+      
+      setTables(sortedTables);
       setError(null);
     } catch (err) {
       console.error('Error fetching tables:', err);
@@ -91,14 +98,19 @@ const Tables = () => {
   };
 
   const handleAddTable = async () => {
+    // Allow empty table name, generate a random ID if not provided
+    let id;
     if (!newTableName.trim()) {
-      setError('Table name is required');
-      return;
+      // Find the highest table number and add 1
+      const tableNumbers = tables.map(table => parseInt(table.id, 10));
+      const maxTableNumber = tableNumbers.length > 0 ? Math.max(...tableNumbers) : 0;
+      id = String(maxTableNumber + 1).padStart(2, '0');
+    } else {
+      id = newTableName.padStart(2, '0');
     }
-
-    const id = newTableName.padStart(2, '0');
     
     try {
+      console.log('Creating table:', { id, customers: parseInt(newTableCustomers, 10) });
       const response = await fetch(`${API_URL}/tables`, {
         method: 'POST',
         headers: {
@@ -110,16 +122,22 @@ const Tables = () => {
         }),
       });
       
+      console.log('Create table response status:', response.status);
+      
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        
         if (response.status === 400) {
           setError(`Table ${id} already exists`);
         } else {
-          throw new Error('Failed to add table');
+          throw new Error(`Failed to add table: ${errorText}`);
         }
         return;
       }
       
       const newTable = await response.json();
+      console.log('New table created:', newTable);
       setTables([...tables, newTable]);
       setNewTableName('');
       setNewTableCustomers(0);
@@ -127,7 +145,7 @@ const Tables = () => {
       setError(null);
     } catch (err) {
       console.error('Error adding table:', err);
-      setError('Failed to add table. Please try again.');
+      setError(`Failed to add table: ${err.message}`);
     }
   };
 
@@ -136,6 +154,10 @@ const Tables = () => {
       setShowAddForm(false);
     }
   };
+  
+  const handleRefresh = () => {
+    fetchTables();
+  };
 
   const filteredTables = tables.filter(table => 
     table.id.toLowerCase().includes(searchQuery.toLowerCase())
@@ -143,18 +165,23 @@ const Tables = () => {
 
   return (
     <div className="tables-container" onClick={handleClickOutside}>
-      <div className="search-container">
-        <input
-          type="text"
-          className="search-input"
-          placeholder="   Search"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
-      
-      <div className="tables-header">
-        <h2>Tables</h2>
+      <div className="tables-header-container">
+        <div className="search-container">
+          <input
+            type="text"
+            className="search-input"
+            placeholder="   Search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        
+        <div className="tables-header">
+          <h2>Tables</h2>
+          <button className="refresh-button" onClick={handleRefresh}>
+            Refresh
+          </button>
+        </div>
       </div>
       
       {error && <div className="error-message">{error}</div>}
@@ -163,33 +190,39 @@ const Tables = () => {
         <div className="loading-message">Loading tables...</div>
       ) : (
         <div className="tables-grid">
-          {filteredTables.map((table) => (
-            <div key={table.id} className="table-card">
-              <div className="table-content">
-                <div className="table-header">
-                  <div className="table-number-container">
-                    <span className="table-text">Table</span>
-                    <span className="table-number">{table.id}</span>
-                  </div>
-                  <div className="table-actions">
-                    <button 
-                      className="delete-button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(table.id);
-                      }}
-                    >
-                      <img src={deleteIcon} alt="Delete" className="delete-icon" />
-                    </button>
+          {filteredTables.length > 0 ? (
+            filteredTables.map((table) => (
+              <div key={table.id} className="table-card">
+                <div className="table-content">
+                  <div className="table-header">
+                    <div className="table-number-container">
+                      <span className="table-text">Table</span>
+                      <span className="table-number">{table.id}</span>
+                    </div>
+                    <div className="table-actions">
+                      <button 
+                        className="delete-button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(table.id);
+                        }}
+                      >
+                        <img src={deleteIcon} alt="Delete" className="delete-icon" />
+                      </button>
+                    </div>
                   </div>
                 </div>
+                <div className="table-customers">
+                  <img src={chairIcon} alt="Chair" className="chair-icon" />
+                  <span>{table.customers}</span>
+                </div>
               </div>
-              <div className="table-customers">
-                <img src={chairIcon} alt="Chair" className="chair-icon" />
-                <span>{table.customers}</span>
-              </div>
+            ))
+          ) : (
+            <div className="no-tables-message">
+              No tables found. Add a table or refresh to see default tables.
             </div>
-          ))}
+          )}
           
           <div className="add-table-card" onClick={() => setShowAddForm(true)} ref={addButtonRef}>
             <div className="add-icon">+</div>
@@ -210,7 +243,7 @@ const Tables = () => {
             }}
           >
             <div className="popup-header">
-              <h3>Table name(optional)</h3>
+              <h3>Table name (optional)</h3>
             </div>
             
             <div className="popup-content">
@@ -220,7 +253,7 @@ const Tables = () => {
                   id="tableName"
                   value={newTableName}
                   onChange={(e) => setNewTableName(e.target.value)}
-                  placeholder="Enter table name"
+                  placeholder="Enter table name or leave blank for auto-numbering"
                   className="dotted-input"
                 />
               </div>
